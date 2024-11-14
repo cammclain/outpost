@@ -12,4 +12,6 @@ RUN source venv/bin/activate
 
 RUN pip3 install -r requirements.txt
 
-RUN uvicorn application.asgi:application --reload --host 127.0.0.1 --port 8000
+COPY entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
