@@ -1,0 +1,8 @@
+litestar
+jinja2
+sqlalchemy
+aiosqlite
+pydantic
+python-dotenv
+redis
+fastapi
