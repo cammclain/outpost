@@ -127,3 +127,24 @@ class TeamserverListener(base):
     public_port = Column(Integer, nullable=False)
 
 
+## Team Server Objects in the "arsenal" to be served up to the beacons
+class TeamserverObject(base):
+    __tablename__ = "teamserver_objects"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    object_data = Column(String)
+    compatible_agents = Column(String)
+    # the url location of the object in the seaweedfs cluster
+    seaweedfs_url_location = Column(String)
+## Team Server Beacon Objects that are being actively deployed to the beacons
+# This is an object that is served up to the beacon to be executed by the beacon.
+class TeamserverBeaconObject(TeamserverObject):
+    __tablename__ = "teamserver_beacon_objects"
+    id = Column(Integer, primary_key=True)
+    #  the campaign that the beacon object is associated with
+    campaign_id = Column(Integer, ForeignKey("teamserver_campaigns.id"))
+    campaign = relationship("TeamserverCampaign", back_populates="beacon_objects")
+    # the teamserver that the beacon object is associated with
+    teamserver_id = Column(Integer, ForeignKey("teamservers.id"))
+    teamserver = relationship("Teamserver", back_populates="beacon_objects")
+    
