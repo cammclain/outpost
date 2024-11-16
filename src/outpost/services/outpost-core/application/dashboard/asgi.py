@@ -13,7 +13,7 @@ from .middleware.auth import AuthenticationMiddleware
 from litestar.middleware.session.server_side import ServerSideSessionBackend, ServerSideSessionConfig
 from config.config import settings
 from redis.asyncio import Redis
-
+from .middleware.session import session_middleware
 ASSETS_DIR = Path("static")
 
 
@@ -23,20 +23,25 @@ def create_app() -> Litestar:
     redis_host = settings.REDIS_HOST
     redis_port = settings.REDIS_PORT
     redis: Redis = Redis(host=redis_host, port=redis_port)
-
-    # create the session backend
-    session_backend = ServerSideSessionBackend(config=ServerSideSessionConfig(secret_key=settings.SESSION_SECRET_KEY, max_age=3600))
-
+    
+    # create the session middleware
+    session_middleware = ServerSideSessionConfig(key=settings.SESSION_SECRET_KEY, max_age=3600).middleware
+    
+    
+    #########################################################
     ## the main application object
     app = Litestar(
         # add the routes
         route_handlers=[
         ],
 
+
         # add the authentication middleware
         middleware=[
+            # add the authentication middleware
             AuthenticationMiddleware,
-            session_backend
+            # add the session middleware as defined above
+            session_middleware
         ],
 
         # add the static files config
