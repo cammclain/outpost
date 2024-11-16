@@ -6,14 +6,14 @@ from litestar import Litestar
 
 import logging
 
-from ..listener_services import HTTPListener
+from litestar import Litestar, Router
 from ...dashboard.database.models.teamserver import TeamserverAgent
 
 # Create a class of HTTP Listenters that serve up objects to the beacons 
-class HTTPAgentServer(HTTPListener, TeamserverAgent):
-    def __init__(self, app: Litestar, agent: TeamserverAgent) -> None:
-        super().__init__(app)
+class HTTPAgentServer(TeamserverAgent):
+    def __init__(self, agent: TeamserverAgent) -> None:
         self.agent = agent
+        self.listener_app = Litestar(route_handlers=[AgentServerController])
 
     async def _http_listener_startup(self) -> None:
         logging.info("HTTP Agent Server Startup")
@@ -27,3 +27,4 @@ class HTTPAgentServer(HTTPListener, TeamserverAgent):
     async def listener_lifecycle(self) -> None:
         await self._http_listener_startup()
         await self._http_listener_shutdown()
+        

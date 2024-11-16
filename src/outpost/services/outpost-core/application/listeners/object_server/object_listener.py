@@ -2,17 +2,19 @@ from __future__ import annotations
 
 from litestar import Litestar
 
-from ..listener_services import HTTPListener
+
 from ...dashboard.database.models.teamserver import TeamserverBeaconObject
 
 import logging
 
-
+from .routes import ObjectServerController
 
 #  Create a class of HTTP Listenters that serve up objects to the beacons 
-class HTTPObjectServer(HTTPListener, TeamserverBeaconObject):
-    def __init__(self, app: Litestar, beacon_object: TeamserverBeaconObject) -> None:
-        super().__init__(app)
+class HTTPObjectServer(TeamserverBeaconObject):
+    def __init__(self, beacon_object: TeamserverBeaconObject) -> None:
+        self.listener_app = Litestar(
+            route_handlers=[ObjectServerController]
+        )
         self.beacon_object = beacon_object
 
     async def _http_listener_startup(self) -> None:
@@ -32,6 +34,7 @@ class HTTPObjectServer(HTTPListener, TeamserverBeaconObject):
 
     async def _http_listener_shutdown(self) -> None:
         logging.info("HTTP Object Server Shutdown")
+        # TODO: Remove the object from the HTTP Server
         pass
 
 
