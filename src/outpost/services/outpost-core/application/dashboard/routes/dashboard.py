@@ -8,11 +8,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ...dashboard.database.models.teamserver import TeamserverAgent, TeamserverBeaconObject, TeamserverCampaign, TeamserverListener, TeamserverTask, TeamserverTarget, TeamserverTargetGroup
 from litestar.response import Template
 from litestar.di import Provide
-
+from ..handlers.auth import is_authenticated_guard
 
 class DashboardController(Controller):
-    path = "/dashboard"
-
+    path = "/dashboard" 
+    guards = [is_authenticated_guard]
     @get()
     async def get_dashboard(self, db_session: AsyncSession) -> Template:
         # Get counts of various entities
@@ -45,7 +45,7 @@ class DashboardController(Controller):
 
     class Campaigns(Controller):
         path = "/campaigns"
-
+        guards = [is_authenticated_guard]
         @get()
         async def get_campaigns(self, db_session: AsyncSession) -> Template:
             # Get all campaigns with related data
@@ -75,7 +75,7 @@ class DashboardController(Controller):
 
     class Targets(Controller):
         path = "/targets"
-
+        guards = [is_authenticated_guard]
         @get()
         async def get_targets(self, db_session: AsyncSession) -> Template:
             # Get all targets with related data
@@ -102,7 +102,7 @@ class DashboardController(Controller):
 
     class Listeners(Controller):
         path = "/listeners"
-
+        guards = [is_authenticated_guard]
         @get()
         async def get_listeners(self, db_session: AsyncSession) -> Template:
             # Get all listeners with related data

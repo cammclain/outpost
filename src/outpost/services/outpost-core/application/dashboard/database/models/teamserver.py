@@ -21,6 +21,11 @@ class Teamserver(base):
     def __repr__(self):
         return f"<Teamserver(name='{self.name}', url='{self.url}', is_active={self.is_active})>"
 
+# user roles
+class TeamserverUserRole(base):
+    __tablename__ = "teamserver_user_roles"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
 
 # this is a user that has access to the teamserver
 class TeamserverUser(base):
