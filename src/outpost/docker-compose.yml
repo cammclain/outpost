@@ -9,6 +9,14 @@ services:
     image: redis:latest
     ports:
       - 6379:6379
+  seaweedfs:
+    image: seaweedfs/seaweedfs:latest
+    ports:
+      - 8077:8077
+      - 8078:8078
+    volumes:
+      - outpost-data:/data
+
 
 volumes:
   outpost-data:

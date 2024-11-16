@@ -14,12 +14,15 @@ def main() -> None:
     # load the environment variables
    
     # run the client application. This is the main dashboard application that clients will connect to, in order to interact with the outpost team server.
+    ## This allows for remote management of the outpost team server
     client_application: Litestar = app.app
     threading.Thread(target=uvicorn.run, args=(client_application, host="127.0.0.1", port=8000)).start()
 
-    # TODO: Launch Listeners
+
+    # TODO: Launch Listeners as an individual thread for each listener 
     # TODO: Read from the database for any active campaigns and launch the associated listeners
+    
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

@@ -3,7 +3,7 @@ import logging
 
  
 from litestar import Litestar, Router
-
+from ..dashboard.database.models.teamserver import TeamserverBeaconObject, TeamserverAgent
 class HTTPListener:
     def __init__(self, app: Litestar) -> None:
         self.app = app
@@ -11,6 +11,9 @@ class HTTPListener:
     async def _http_listener_startup(self) -> None:
         logging.info("HTTP Listener Startup")
         pass
+
+    
+
 
 
     async def _http_listener_shutdown(self) -> None:
@@ -20,12 +23,8 @@ class HTTPListener:
         ## The agents that are offline will need to be alerted to the change in state before the listener is shutdown
         pass
 
-#  Create a class of HTTP Listenters that serve up objects to the beacons 
-class HTTPObjectServer(HTTPListener, beacon_object: BeaconObject):
-    def __init__(self, app: Litestar, beacon_object: BeaconObject) -> None:
-        super().__init__(app)
-        self.beacon_object = beacon_object
 
-
-        
+    async def listener_lifecycle(self) -> None:
+        await self._http_listener_startup()
+        await self._http_listener_shutdown()
 
