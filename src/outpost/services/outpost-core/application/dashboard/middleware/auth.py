@@ -5,6 +5,7 @@ from ..database.models.teamserver import TeamserverUser
 from ..routes.auth import AuthController  
 
 # TODO: This middleware is not complete. It needs to be completed to check if the user is authenticated and redirect to the login page if not.
+# TODO:
 
 # This middleware is used to check if the user is authenticated
 class AuthenticationMiddleware(AbstractMiddleware):
