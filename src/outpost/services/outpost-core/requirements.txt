@@ -1,4 +1,4 @@
-litestar
+litestar[all]
 jinja2
 sqlalchemy
 aiosqlite
